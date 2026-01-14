@@ -1,0 +1,7 @@
+{
+  "/dashboard/processing/page": "app/dashboard/processing/page.js",
+  "/dashboard/results/page": "app/dashboard/results/page.js",
+  "/dashboard/new-analysis/page": "app/dashboard/new-analysis/page.js",
+  "/dashboard/page": "app/dashboard/page.js",
+  "/dashboard/history/page": "app/dashboard/history/page.js"
+}

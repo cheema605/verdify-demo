@@ -1,0 +1,8 @@
+
+{
+  "name": "Verdify - Enterprise Satellite Analysis",
+  "description": "Professional-grade geospatial analysis platform for satellite imagery, providing advanced vegetation indices, time-series monitoring, and enterprise project management.",
+  "requestFramePermissions": [
+    "geolocation"
+  ]
+}

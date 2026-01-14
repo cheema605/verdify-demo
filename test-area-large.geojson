@@ -1,0 +1,43 @@
+{
+    "type": "FeatureCollection",
+    "features": [
+        {
+            "type": "Feature",
+            "properties": {
+                "name": "Large Amazon Study Area",
+                "description": "Polygon covering ~50,000 km² suitable for vegetation analysis"
+            },
+            "geometry": {
+                "type": "Polygon",
+                "coordinates": [
+                    [
+                        [
+                            -63.5,
+                            -4.0
+                        ],
+                        [
+                            -63.5,
+                            -5.0
+                        ],
+                        [
+                            -62.5,
+                            -5.0
+                        ],
+                        [
+                            -62.0,
+                            -4.5
+                        ],
+                        [
+                            -62.0,
+                            -4.0
+                        ],
+                        [
+                            -63.5,
+                            -4.0
+                        ]
+                    ]
+                ]
+            }
+        }
+    ]
+}
