@@ -1,5 +1,13 @@
 {
   "/_app": "pages/_app.js",
   "/_error": "pages/_error.js",
-  "/_document": "pages/_document.js"
+  "/ApiView": "pages/ApiView.html",
+  "/Auth": "pages/Auth.html",
+  "/Dashboard": "pages/Dashboard.html",
+  "/HistoryView": "pages/HistoryView.html",
+  "/ProcessingScreen": "pages/ProcessingScreen.html",
+  "/NewAnalysisWizard": "pages/NewAnalysisWizard.html",
+  "/ResultsView": "pages/ResultsView.html",
+  "/_document": "pages/_document.js",
+  "/404": "pages/404.html"
 }

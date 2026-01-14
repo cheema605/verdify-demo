@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, Suspense } from 'react';
 import { useRouter, useSearchParams } from 'next/navigation';
 import {
     Loader2,
@@ -15,7 +15,7 @@ import {
 import { Progress, Card, Badge, Button } from '@/components/UI';
 import MapView from '@/components/MapView';
 
-export default function ProcessingPage() {
+function ProcessingContent() {
     const router = useRouter();
     const searchParams = useSearchParams();
     const [selectedGeoJSON, setSelectedGeoJSON] = useState<GeoJSON.Feature | null>(null);
@@ -198,5 +198,13 @@ export default function ProcessingPage() {
                 </div>
             </div>
         </div>
+    );
+}
+
+export default function ProcessingPage() {
+    return (
+        <Suspense fallback={<div className="flex h-full items-center justify-center"><div className="animate-spin rounded-full h-8 w-8 border-b-2 border-indigo-600"></div></div>}>
+            <ProcessingContent />
+        </Suspense>
     );
 }

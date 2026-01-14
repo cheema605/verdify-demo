@@ -15,7 +15,12 @@ import {
   ChevronRight
 } from 'lucide-react';
 
-const Sidebar: React.FC = () => {
+interface SidebarProps {
+  currentView?: any;
+  setView?: (view: any) => void;
+}
+
+const Sidebar: React.FC<SidebarProps> = ({ currentView, setView }) => {
   const pathname = usePathname();
   const router = useRouter();
 
@@ -48,8 +53,8 @@ const Sidebar: React.FC = () => {
               key={item.href}
               href={item.href}
               className={`w-full flex items-center justify-between px-3 py-2.5 rounded-lg text-sm transition-all group ${isActive
-                  ? 'bg-slate-900 text-white shadow-md'
-                  : 'text-slate-600 hover:bg-slate-50 hover:text-slate-900'
+                ? 'bg-slate-900 text-white shadow-md'
+                : 'text-slate-600 hover:bg-slate-50 hover:text-slate-900'
                 }`}
             >
               <div className="flex items-center gap-3">

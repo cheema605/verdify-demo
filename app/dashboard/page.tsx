@@ -127,12 +127,15 @@ export default function DashboardPage() {
 
     const handleViewProject = (id: string) => {
         const project = projects.find(p => p.id === id);
-        if (project && project.geojson) {
-            const geojsonParam = encodeURIComponent(JSON.stringify(project.geojson));
+        if (project) {
+            const geojsonParam = project.geojson ? encodeURIComponent(JSON.stringify(project.geojson)) : '';
             const indicesParam = project.selectedIndices ? encodeURIComponent(JSON.stringify(project.selectedIndices)) : '';
-            router.push(`/dashboard/results?id=${id}&name=${encodeURIComponent(project.name)}&geojson=${geojsonParam}&indices=${indicesParam}&status=${project.status}`);
-        } else {
-            router.push(`/dashboard/results?id=${id}&status=${project.status}`);
+
+            if (project.geojson) {
+                router.push(`/dashboard/results?id=${id}&name=${encodeURIComponent(project.name)}&geojson=${geojsonParam}&indices=${indicesParam}&status=${project.status}`);
+            } else {
+                router.push(`/dashboard/results?id=${id}&name=${encodeURIComponent(project.name)}&status=${project.status}`);
+            }
         }
     };
 

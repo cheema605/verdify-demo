@@ -361,7 +361,7 @@ const NewAnalysisWizard: React.FC<NewAnalysisWizardProps> = ({ onCancel, onStart
             Step {currentStep} of {steps.length}
           </div>
           <Button
-            onClick={currentStep === 4 ? onStart : next}
+            onClick={currentStep === 4 ? () => onStart(selectedGeoJSON) : next}
           >
             {currentStep === 4 ? 'Launch Analysis' : 'Next'}
             {currentStep !== 4 && <ChevronRight className="w-4 h-4 ml-1" />}

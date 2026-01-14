@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, Suspense } from 'react';
 import { useRouter, useSearchParams } from 'next/navigation';
 import {
     Download,
@@ -44,7 +44,7 @@ const mockChartData = [
     { date: 'Dec 23', value: 0.32 },
 ];
 
-export default function ResultsPage() {
+function ResultsContent() {
     const router = useRouter();
     const searchParams = useSearchParams();
     const [projectGeoJSON, setProjectGeoJSON] = useState<GeoJSON.Feature | null>(null);
@@ -388,5 +388,13 @@ export default function ResultsPage() {
                 </div>
             </div>
         </div >
+    );
+}
+
+export default function ResultsPage() {
+    return (
+        <Suspense fallback={<div className="flex h-full items-center justify-center"><div className="animate-spin rounded-full h-8 w-8 border-b-2 border-indigo-600"></div></div>}>
+            <ResultsContent />
+        </Suspense>
     );
 }
