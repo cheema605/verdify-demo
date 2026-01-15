@@ -18,108 +18,18 @@ import {
 import { Card, Button, Badge, Progress } from '@/components/UI';
 import { Project } from '@/types';
 import MapView from '@/components/MapView';
+import { useWorkspace } from '@/context/WorkspaceContext';
+import { useProject } from '@/context/ProjectContext';
+import { generateNotifications } from '@/lib/notifications';
 
-const mockProjects: Project[] = [
-    {
-        id: '1',
-        name: 'Amazon Rainforest Monitoring',
-        client: 'GreenEarth NGO',
-        startDate: '2024-03-20',
-        deadline: '2024-05-04',
-        status: 'Active',
-        progress: 30,
-        type: 'NDVI',
-        selectedIndices: ['NDVI', 'NDWI'],
-        geojson: {
-            type: 'Feature',
-            geometry: { type: 'Polygon', coordinates: [[[-60.5, -3.2], [-60.5, -3.8], [-59.8, -3.8], [-59.8, -3.2], [-60.5, -3.2]]] },
-            properties: {}
-        }
-    },
-    {
-        id: '2',
-        name: 'Iowa Corn Yield Prediction',
-        client: 'AgriCorp Global',
-        startDate: '2024-03-15',
-        deadline: '2024-04-10',
-        status: 'Canceled',
-        progress: 60,
-        type: 'EVI',
-        selectedIndices: ['NVI'],
-        geojson: {
-            type: 'Feature',
-            geometry: { type: 'Polygon', coordinates: [[[-95.5, 41.7], [-95.5, 41.3], [-94.9, 41.3], [-94.9, 41.7], [-95.5, 41.7]]] },
-            properties: {}
-        }
-    },
-    {
-        id: '3',
-        name: 'Sahara Desert Boundary Study',
-        client: 'United Nations Env',
-        startDate: '2024-03-01',
-        deadline: '2024-04-01',
-        status: 'Completed',
-        progress: 100,
-        type: 'Custom',
-        selectedIndices: ['NDVI', 'NDWI', 'NVI'],
-        geojson: {
-            type: 'Feature',
-            geometry: { type: 'Polygon', coordinates: [[[2.5, 25.2], [2.5, 24.6], [3.2, 24.6], [3.2, 25.2], [2.5, 25.2]]] },
-            properties: {}
-        }
-    },
-    {
-        id: '4',
-        name: 'California Vineyard Hydration',
-        client: 'Napa Valley Vintners',
-        startDate: '2024-03-20',
-        deadline: '2024-05-20',
-        status: 'Pending',
-        progress: 50,
-        type: 'SAVI',
-        selectedIndices: ['NDWI'],
-        geojson: {
-            type: 'Feature',
-            geometry: { type: 'Polygon', coordinates: [[[-122.5, 38.5], [-122.5, 38.2], [-122.2, 38.2], [-122.2, 38.5], [-122.5, 38.5]]] },
-            properties: {}
-        }
-    },
-    {
-        id: '5',
-        name: 'Urban Expansion Tokyo',
-        client: 'City Planning Dept',
-        startDate: '2024-04-01',
-        deadline: '2024-06-01',
-        status: 'Active',
-        progress: 45,
-        type: 'NDVI',
-        selectedIndices: ['NDVI'],
-        geojson: {
-            type: 'Feature',
-            geometry: { type: 'Polygon', coordinates: [[[139.7, 35.7], [139.7, 35.6], [139.8, 35.6], [139.8, 35.7], [139.7, 35.7]]] },
-            properties: {}
-        }
-    },
-];
+
 
 export default function DashboardPage() {
     const router = useRouter();
-    const [projects, setProjects] = React.useState<Project[]>(mockProjects);
+    const { currentWorkspace } = useWorkspace();
+    const { getProjectsByWorkspace } = useProject();
 
-    // Load projects from localStorage on mount
-    React.useEffect(() => {
-        const stored = localStorage.getItem('verdify_projects');
-        if (stored) {
-            try {
-                const storedProjects = JSON.parse(stored);
-                // Merge stored projects with mock projects (avoid duplicates by ID)
-                const merged = [...storedProjects, ...mockProjects.filter(mp => !storedProjects.find((sp: Project) => sp.id === mp.id))];
-                setProjects(merged);
-            } catch (e) {
-                console.error('Failed to parse stored projects:', e);
-            }
-        }
-    }, []);
+    const projects = currentWorkspace ? getProjectsByWorkspace(currentWorkspace.id) : [];
 
     const handleNewAnalysis = () => {
         router.push('/dashboard/new-analysis');
@@ -161,7 +71,7 @@ export default function DashboardPage() {
                 </div>
 
                 {/* Stats Cards */}
-                <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                     <Card className="p-6">
                         <div className="flex items-center justify-between mb-4">
                             <div className="p-2 bg-amber-50 rounded-lg">
@@ -173,7 +83,9 @@ export default function DashboardPage() {
                             </span>
                         </div>
                         <p className="text-slate-500 text-sm font-medium">Active Analysis</p>
-                        <h3 className="text-2xl font-bold text-slate-900 mt-1">42</h3>
+                        <h3 className="text-2xl font-bold text-slate-900 mt-1">
+                            {projects.filter(p => p.status === 'Active').length}
+                        </h3>
                     </Card>
 
                     <Card className="p-6">
@@ -188,20 +100,6 @@ export default function DashboardPage() {
                         </div>
                         <p className="text-slate-500 text-sm font-medium">System Alerts</p>
                         <h3 className="text-2xl font-bold text-slate-900 mt-1">12</h3>
-                    </Card>
-
-                    <Card className="p-6">
-                        <div className="flex items-center justify-between mb-4">
-                            <div className="p-2 bg-slate-100 rounded-lg">
-                                <Clock className="w-5 h-5 text-slate-600" />
-                            </div>
-                            <span className="flex items-center text-rose-600 text-xs font-bold">
-                                <ArrowDownRight className="w-3 h-3 mr-1" />
-                                -12.5%
-                            </span>
-                        </div>
-                        <p className="text-slate-500 text-sm font-medium">Total Compute Time</p>
-                        <h3 className="text-2xl font-bold text-slate-900 mt-1">168h 40m</h3>
                     </Card>
                 </div>
 
@@ -287,46 +185,24 @@ export default function DashboardPage() {
                         <Card className="p-6">
                             <h2 className="font-bold text-slate-900 mb-4">Recent Alerts</h2>
                             <div className="space-y-4">
-                                {[
-                                    {
-                                        title: 'Analysis Complete',
-                                        desc: 'Urban Expansion Tokyo finished processing successfully.',
-                                        priority: 'Low',
-                                        projectId: '5',
-                                        projectName: 'Urban Expansion Tokyo'
-                                    },
-                                    {
-                                        title: 'Cloud Cover Threshold',
-                                        desc: 'Amazon Rainforest Monitoring has 85% cloud cover, analysis paused.',
-                                        priority: 'High',
-                                        projectId: '1',
-                                        projectName: 'Amazon Rainforest Monitoring'
-                                    },
-                                    {
-                                        title: 'New Granules Available',
-                                        desc: 'Sentinel-2 L2A updated for California Vineyard area.',
-                                        priority: 'Medium',
-                                        projectId: '4',
-                                        projectName: 'California Vineyard Hydration'
-                                    }
-                                ].map((alert, i) => (
+                                {generateNotifications(projects).slice(0, 3).map((alert) => (
                                     <div
-                                        key={i}
-                                        className="p-3 rounded-xl border border-slate-100 hover:shadow-sm hover:border-indigo-200 transition-all cursor-pointer"
+                                        key={alert.id}
+                                        className={`p-3 rounded-xl border border-slate-100 hover:shadow-sm transition-all ${alert.projectId ? 'cursor-pointer hover:border-indigo-200' : ''}`}
                                         onClick={() => alert.projectId && handleViewProject(alert.projectId)}
                                     >
                                         <div className="flex items-center gap-2 mb-1">
                                             <div className={`w-2 h-2 rounded-full ${alert.priority === 'High' ? 'bg-rose-500' : alert.priority === 'Medium' ? 'bg-amber-500' : 'bg-emerald-500'}`} />
                                             <span className="text-xs font-bold text-slate-900">{alert.title}</span>
                                         </div>
-                                        <p className="text-xs text-slate-500 leading-relaxed">{alert.desc}</p>
+                                        <p className="text-xs text-slate-500 leading-relaxed">{alert.message}</p>
                                         {alert.projectName && (
                                             <p className="text-[10px] text-indigo-600 mt-1 font-medium">→ {alert.projectName}</p>
                                         )}
                                     </div>
                                 ))}
                             </div>
-                            <Button variant="ghost" className="w-full mt-4 text-xs font-bold text-indigo-600">View All Notifications</Button>
+                            <Button variant="ghost" className="w-full mt-4 text-xs font-bold text-indigo-600" onClick={() => router.push('/dashboard/notifications')}>View All Notifications</Button>
                         </Card>
 
                         <Card className="p-6 bg-slate-900 text-white border-none">

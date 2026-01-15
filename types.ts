@@ -6,11 +6,13 @@ export enum AppView {
   PROCESSING = 'PROCESSING',
   RESULTS = 'RESULTS',
   HISTORY = 'HISTORY',
-  API = 'API'
+  API = 'API',
+  NOTIFICATIONS = 'NOTIFICATIONS'
 }
 
 export interface Project {
   id: string;
+  workspaceId: string;
   name: string;
   client: string;
   startDate: string;
@@ -33,4 +35,11 @@ export interface AnalysisConfig {
   aoiType: 'Polygon' | 'Rectangle' | 'Upload';
   timeRange: { start: string; end: string };
   index: 'NDVI' | 'EVI' | 'SAVI' | 'Custom';
+}
+
+export interface Workspace {
+  id: string;
+  name: string;
+  description?: string;
+  createdAt: string;
 }

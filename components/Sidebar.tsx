@@ -26,7 +26,7 @@ const Sidebar: React.FC<SidebarProps> = ({ currentView, setView }) => {
 
   const navItems = [
     { href: '/dashboard', label: 'Dashboard', icon: LayoutDashboard },
-    { href: '/dashboard/results', label: 'Analysis Results', icon: Layers },
+    { href: '/dashboard/notifications', label: 'Notifications', icon: Bell },
     { href: '/dashboard/history', label: 'Project History', icon: History },
     { href: '/dashboard/api', label: 'API Access', icon: Terminal },
   ];
@@ -71,11 +71,6 @@ const Sidebar: React.FC<SidebarProps> = ({ currentView, setView }) => {
           <button className="w-full flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm text-slate-600 hover:bg-slate-50 hover:text-slate-900">
             <ShieldCheck className="w-4 h-4" />
             <span className="font-medium">Admin Control</span>
-          </button>
-          <button className="w-full flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm text-slate-600 hover:bg-slate-50 hover:text-slate-900">
-            <Bell className="w-4 h-4" />
-            <span className="font-medium">Notifications</span>
-            <span className="ml-auto bg-red-500 text-white text-[10px] px-1.5 py-0.5 rounded-full font-bold">3</span>
           </button>
         </div>
       </nav>

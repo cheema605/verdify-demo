@@ -14,7 +14,7 @@ interface NominatimResult {
 }
 
 interface LocationSearchProps {
-    onLocationSelect: (lat: number, lon: number, bounds?: [number, number, number, number]) => void;
+    onLocationSelect: (lat: number, lon: number, bounds: [number, number, number, number] | undefined, name: string) => void;
     className?: string;
 }
 
@@ -95,7 +95,9 @@ const LocationSearch: React.FC<LocationSearchProps> = ({ onLocationSelect, class
             ];
         }
 
-        onLocationSelect(lat, lon, bounds);
+        const name = result.display_name.split(',')[0];
+        console.log('Location selected:', { name, lat, lon, bounds, fullDisplayName: result.display_name });
+        onLocationSelect(lat, lon, bounds, name);
         setQuery(result.display_name);
         setShowResults(false);
     };

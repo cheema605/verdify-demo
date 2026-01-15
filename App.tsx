@@ -2,14 +2,17 @@
 import React, { useState } from 'react';
 import { AppView } from './types';
 import Sidebar from './components/Sidebar';
-import Auth from './pages/Auth';
-import Dashboard from './pages/Dashboard';
-import NewAnalysisWizard from './pages/NewAnalysisWizard';
-import ProcessingScreen from './pages/ProcessingScreen';
-import ResultsView from './pages/ResultsView';
-import HistoryView from './pages/HistoryView';
-import ApiView from './pages/ApiView';
+import Auth from './components/views/Auth';
+import Dashboard from './components/DashboardView';
+import NewAnalysisWizard from './components/views/NewAnalysisWizard';
+import ProcessingScreen from './components/views/ProcessingScreen';
+import NotificationsView from './components/views/NotificationsView';
+import ResultsView from './components/views/ResultsView';
+import HistoryView from './components/views/HistoryView';
+import ApiView from './components/views/ApiView';
 import { Bell, Search, Settings, HelpCircle } from 'lucide-react';
+import { WorkspaceProvider } from './context/WorkspaceContext';
+import { ProjectProvider } from './context/ProjectContext';
 
 const App: React.FC = () => {
   const [currentView, setView] = useState<AppView>(AppView.AUTH);
@@ -57,9 +60,17 @@ const App: React.FC = () => {
       return <Auth onLogin={() => setView(AppView.DASHBOARD)} />;
     case AppView.DASHBOARD:
       return renderLayout(
-        <div className="p-8 h-full overflow-y-auto custom-scrollbar">
-          <Dashboard onNewAnalysis={() => setView(AppView.WIZARD)} onViewProject={() => setView(AppView.RESULTS)} />
-        </div>
+        <WorkspaceProvider>
+          <ProjectProvider>
+            <div className="p-8 h-full overflow-y-auto custom-scrollbar">
+              <Dashboard
+                onNewAnalysis={() => setView(AppView.WIZARD)}
+                onViewProject={() => setView(AppView.RESULTS)}
+                onViewNotifications={() => setView(AppView.NOTIFICATIONS)}
+              />
+            </div>
+          </ProjectProvider>
+        </WorkspaceProvider>
       );
     case AppView.WIZARD:
       return <NewAnalysisWizard onCancel={() => setView(AppView.DASHBOARD)} onStart={(geojson) => {
@@ -80,6 +91,12 @@ const App: React.FC = () => {
       return renderLayout(
         <div className="p-8 h-full overflow-y-auto custom-scrollbar">
           <ApiView />
+        </div>
+      );
+    case AppView.NOTIFICATIONS:
+      return renderLayout(
+        <div className="p-8 h-full overflow-y-auto custom-scrollbar">
+          <NotificationsView />
         </div>
       );
     default:
