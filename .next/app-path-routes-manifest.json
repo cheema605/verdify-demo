@@ -1,14 +1,14 @@
 {
   "/_not-found/page": "/_not-found",
-  "/sitemap.xml/route": "/sitemap.xml",
   "/robots.txt/route": "/robots.txt",
+  "/sitemap.xml/route": "/sitemap.xml",
   "/page": "/",
-  "/login/page": "/login",
-  "/dashboard/api/page": "/dashboard/api",
-  "/dashboard/new-analysis/page": "/dashboard/new-analysis",
   "/dashboard/history/page": "/dashboard/history",
-  "/dashboard/results/page": "/dashboard/results",
+  "/dashboard/new-analysis/page": "/dashboard/new-analysis",
+  "/dashboard/notifications/page": "/dashboard/notifications",
   "/dashboard/page": "/dashboard",
   "/dashboard/processing/page": "/dashboard/processing",
-  "/dashboard/notifications/page": "/dashboard/notifications"
+  "/dashboard/results/page": "/dashboard/results",
+  "/dashboard/api/page": "/dashboard/api",
+  "/login/page": "/login"
 }

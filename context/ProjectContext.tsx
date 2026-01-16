@@ -34,7 +34,7 @@ const MOCK_PROJECTS: Project[] = [
     {
         id: '2',
         workspaceId: 'ws-1',
-        name: 'Iowa Corn Yield Prediction',
+        name: 'Iowa Corn Analysis',
         client: 'AgriCorp Global',
         startDate: '2024-03-15',
         deadline: '2024-04-10',
