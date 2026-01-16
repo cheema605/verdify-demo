@@ -21,9 +21,10 @@ import { generateNotifications } from '@/lib/notifications';
 interface DashboardProps {
   onNewAnalysis: () => void;
   onViewNotifications: () => void;
+  onViewProject: (projectId: string) => void;
 }
 
-const Dashboard: React.FC<DashboardProps> = ({ onNewAnalysis, onViewNotifications }) => {
+const Dashboard: React.FC<DashboardProps> = ({ onNewAnalysis, onViewNotifications, onViewProject }) => {
   const { currentWorkspace } = useWorkspace();
   const { getProjectsByWorkspace } = useProject();
 

@@ -65,7 +65,7 @@ const App: React.FC = () => {
             <div className="p-8 h-full overflow-y-auto custom-scrollbar">
               <Dashboard
                 onNewAnalysis={() => setView(AppView.WIZARD)}
-                onViewProject={() => setView(AppView.RESULTS)}
+                onViewProject={(projectId) => setView(AppView.RESULTS)}
                 onViewNotifications={() => setView(AppView.NOTIFICATIONS)}
               />
             </div>
