@@ -90,7 +90,7 @@ const NewAnalysisWizard: React.FC<NewAnalysisWizardProps> = ({ onCancel, onStart
       startDate: startDate,
       deadline: endDate,
       status: 'Active',
-      progress: 0,
+      progress: 100,
       type: selectedIndices[0] as any || 'Custom',
       selectedIndices: selectedIndices,
       geojson: selectedGeoJSON || undefined
@@ -160,7 +160,7 @@ const NewAnalysisWizard: React.FC<NewAnalysisWizardProps> = ({ onCancel, onStart
         </div>
 
         {/* Content Area */}
-        <div className="flex-1 flex flex-col bg-white overflow-hidden relative">
+        <div className="flex-1 flex flex-col bg-white overflow-y-auto relative">
           {currentStep === 1 && (
             <div className="flex flex-col lg:flex-row h-full gap-4 p-4">
               {/* Left Sidebar - Tools */}
@@ -395,19 +395,37 @@ const NewAnalysisWizard: React.FC<NewAnalysisWizardProps> = ({ onCancel, onStart
               <Card className="text-left divide-y divide-slate-100 overflow-hidden">
                 <div className="p-4 flex justify-between bg-slate-50/50">
                   <span className="text-sm text-slate-500">Project Name</span>
-                  <span className="text-sm font-bold text-slate-900">Iowa Field Survey 2024</span>
+                  <span className="text-sm font-bold text-slate-900">{analysisName || 'Untitled Analysis'}</span>
                 </div>
                 <div className="p-4 flex justify-between">
                   <span className="text-sm text-slate-500">Analysis Type</span>
-                  <span className="text-sm font-bold text-slate-900">NDVI + Time Series</span>
+                  <span className="text-sm font-bold text-slate-900">
+                    {selectedIndices.length > 0 ? selectedIndices.join(', ') : 'No indices selected'}
+                  </span>
                 </div>
                 <div className="p-4 flex justify-between">
                   <span className="text-sm text-slate-500">Scene Source</span>
-                  <span className="text-sm font-bold text-slate-900">Sentinel-2 (L2A, Top of Atmos)</span>
+                  <span className="text-sm font-bold text-slate-900">{satelliteSource}</span>
+                </div>
+                <div className="p-4 flex justify-between">
+                  <span className="text-sm text-slate-500">Area of Interest</span>
+                  <span className="text-sm font-bold text-slate-900">
+                    {selectedArea > 0 ? `${selectedArea.toFixed(2)} km²` : 'Not selected'}
+                  </span>
+                </div>
+                <div className="p-4 flex justify-between">
+                  <span className="text-sm text-slate-500">Time Period</span>
+                  <span className="text-sm font-bold text-slate-900">
+                    {isRecurring ? 'Ongoing (Recurring)' : `${startDate} to ${endDate}`}
+                  </span>
                 </div>
                 <div className="p-4 flex justify-between">
                   <span className="text-sm text-slate-500">Estimated Duration</span>
-                  <span className="text-sm font-bold text-slate-900">~14 minutes</span>
+                  <span className="text-sm font-bold text-slate-900">
+                    {selectedArea > 0
+                      ? `~${Math.max(2, Math.ceil(selectedArea / 50))} minutes`
+                      : 'N/A'}
+                  </span>
                 </div>
               </Card>
               <div className="flex items-center gap-3 p-4 bg-amber-50 rounded-xl border border-amber-100 text-left">
@@ -419,28 +437,28 @@ const NewAnalysisWizard: React.FC<NewAnalysisWizardProps> = ({ onCancel, onStart
             </div>
           )}
         </div>
+      </div>
 
-        {/* Footer Navigation */}
-        <div className="px-6 py-4 border-t border-slate-100 flex items-center justify-between flex-shrink-0 bg-white">
-          <Button
-            variant="outline"
-            onClick={back}
-            disabled={currentStep === 1}
-            className={currentStep === 1 ? 'invisible' : ''}
-          >
-            <ChevronLeft className="w-4 h-4 mr-1" />
-            Back
-          </Button>
-          <div className="text-sm text-slate-500">
-            Step {currentStep} of {steps.length}
-          </div>
-          <Button
-            onClick={currentStep === 4 ? handleLaunch : next}
-          >
-            {currentStep === 4 ? 'Launch Analysis' : 'Next'}
-            {currentStep !== 4 && <ChevronRight className="w-4 h-4 ml-1" />}
-          </Button>
+      {/* Footer Navigation - Now at bottom of page */}
+      <div className="px-6 py-4 border-t border-slate-100 flex items-center justify-between flex-shrink-0 bg-white">
+        <Button
+          variant="outline"
+          onClick={back}
+          disabled={currentStep === 1}
+          className={currentStep === 1 ? 'invisible' : ''}
+        >
+          <ChevronLeft className="w-4 h-4 mr-1" />
+          Back
+        </Button>
+        <div className="text-sm text-slate-500">
+          Step {currentStep} of {steps.length}
         </div>
+        <Button
+          onClick={currentStep === 4 ? handleLaunch : next}
+        >
+          {currentStep === 4 ? 'Launch Analysis' : 'Next'}
+          {currentStep !== 4 && <ChevronRight className="w-4 h-4 ml-1" />}
+        </Button>
       </div>
     </div>
   );

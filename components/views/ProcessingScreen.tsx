@@ -33,7 +33,7 @@ const ProcessingScreen: React.FC<ProcessingScreenProps> = ({ onFinish, initialGe
         }
         return p + Math.random() * 5;
       });
-    }, 800);
+    }, 400); // Reduced from 800ms to 400ms for 2x speed
 
     const logTimer = setInterval(() => {
       const messages = [
@@ -49,7 +49,7 @@ const ProcessingScreen: React.FC<ProcessingScreenProps> = ({ onFinish, initialGe
         if (prev.length >= 10) return prev;
         return [...prev, messages[Math.floor(Math.random() * messages.length)]];
       });
-    }, 2000);
+    }, 1000); // Reduced from 2000ms to 1000ms for faster log updates
 
     return () => {
       clearInterval(timer);
@@ -58,7 +58,7 @@ const ProcessingScreen: React.FC<ProcessingScreenProps> = ({ onFinish, initialGe
   }, []);
 
   return (
-    <div className="min-h-screen bg-slate-50 flex items-center justify-center p-6 overflow-y-auto">
+    <div className="relative z-10 h-screen bg-slate-50 flex items-center justify-center p-6 overflow-y-auto">
       <div className="max-w-4xl w-full space-y-8 animate-in zoom-in-95 duration-700 my-8">
         <div className="text-center space-y-4">
           <div className="inline-flex items-center justify-center p-3 bg-white border border-slate-200 rounded-2xl shadow-sm mb-4">
